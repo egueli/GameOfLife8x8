@@ -3,15 +3,14 @@
 #include <map>
 #include <utility>
 #include <algorithm>
+#include <array>
 
 using namespace std;
 
 template<int Cols, int Rows>
 class Field {
 public:
-	Field() {
-		std::fill(cells[0], cells[0] + Rows * Cols, false);
-	}
+	Field() : cells() {}
 
 	void set(int x, int y) {
 		cells[x][y] = true;
@@ -35,7 +34,7 @@ public:
 		return !operator==(rhs);
 	}
 private:
-	bool cells[Cols][Rows];
+	array<array<bool, Rows>, Cols> cells;
 };
 
 int wrap(int n, int max) {
