@@ -13,7 +13,11 @@ public:
 	Field() : cells() {}
 
 	void set(int x, int y) {
-		cells[x][y] = true;
+		set(x, y, true);
+	}
+
+	void set(int x, int y, bool alive) {
+		cells[x][y] = alive;
 	}
 
 	bool get(int x, int y) const {
@@ -49,8 +53,8 @@ void find_neighbors(
 		const Field<Cols, Rows> &current) {
 	for (int x = 0; x < Cols; x++) {
 		for (int y = 0; y < Rows; y++) {
-			for (int nx = -1; nx >= 1; nx++) {
-				for (int ny = -1; ny >= 1; ny++) {
+			for (int nx = -1; nx <= 1; nx++) {
+				for (int ny = -1; ny <= 1; ny++) {
 					if (nx == 0 && ny == 0)
 						continue;
 
@@ -66,17 +70,52 @@ void find_neighbors(
 }
 
 template<size_t Cols, size_t Rows>
+void print_field(const Field<Cols, Rows> & field) {
+	for (int x = 0; x < Cols; x++) {
+		for (int y = 0; y < Rows; y++) {
+			printf("%d ", field.get(x, y));
+		}
+		printf("\n");
+	}
+}
+
+template<size_t Cols, size_t Rows>
+void print_neighbors(array<array<int, Rows>, Cols> &neighbors) {
+	for (int x = 0; x < Cols; x++) {
+		for (int y = 0; y < Rows; y++) {
+			printf("%d ", neighbors[x][y]);
+		}
+		printf("\n");
+	}
+}
+
+
+template<size_t Cols, size_t Rows>
 Field<Cols, Rows> advance(const Field<Cols, Rows> & current) {
-	array<array<int, Rows>, Cols> neighbors;
+	array<array<int, Rows>, Cols> neighbors = {};
 	find_neighbors(neighbors, current);
-	return current;
+	print_neighbors(neighbors);
+
+	Field<Cols, Rows> next;
+	for (int x = 0; x < Cols; x++) {
+		for (int y = 0; y < Rows; y++) {
+			if (!current.get(x, y)) {
+				next.set(x, y, neighbors[x][y] == 3);
+			}
+			else {
+				int n = neighbors[x][y];
+				next.set(x, y, (n == 2 || n == 3));
+			}
+		}
+	}
+	return next;
 }
 
 Field<8, 8> blinker_v() {
 	Field<8, 8> out;
-	out.set(1, 0);
+	out.set(0, 1);
 	out.set(1, 1);
-	out.set(1, 2);
+	out.set(2, 1);
 	return out;
 }
 
