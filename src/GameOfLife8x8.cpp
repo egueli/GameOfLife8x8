@@ -7,7 +7,7 @@
 
 using namespace std;
 
-template<int Cols, int Rows>
+template<size_t Cols, size_t Rows>
 class Field {
 public:
 	Field() : cells() {}
@@ -43,31 +43,32 @@ int wrap(int n, int max) {
 	return n;
 }
 
-//template<int Cols, int Rows>
-//void find_neighbors(
-//		int (&neighbors)[Cols][Rows],
-//		const Field<Cols, Rows>& current) {
-//	std::fill(neighbors[0], neighbors[0] + Rows * Cols, 0);
-//	for (int x = 0; x < Cols; x++) {
-//		for (int y = 0; y < Rows; y++) {
-//			for (int nx = -1; nx >= 1; nx++) {
-//				for (int ny = -1; ny >= 1; ny++) {
-//					if (nx == 0 && ny == 0)
-//						continue;
-//
-//					int xx = wrap(x + nx, Rows);
-//					int yy = wrap(y + ny, Cols);
-//					if (current.get(xx, yy)) {
-//						neighbors[x][y]++;
-//					}
-//				}
-//			}
-//		}
-//	}
-//}
+template<size_t Cols, size_t Rows>
+void find_neighbors(
+		array<array<int, Rows>, Cols> &neighbors,
+		const Field<Cols, Rows> &current) {
+	for (int x = 0; x < Cols; x++) {
+		for (int y = 0; y < Rows; y++) {
+			for (int nx = -1; nx >= 1; nx++) {
+				for (int ny = -1; ny >= 1; ny++) {
+					if (nx == 0 && ny == 0)
+						continue;
 
-template<int Cols, int Rows>
+					int xx = wrap(x + nx, Rows);
+					int yy = wrap(y + ny, Cols);
+					if (current.get(xx, yy)) {
+						neighbors[x][y]++;
+					}
+				}
+			}
+		}
+	}
+}
+
+template<size_t Cols, size_t Rows>
 Field<Cols, Rows> advance(const Field<Cols, Rows> & current) {
+	array<array<int, Rows>, Cols> neighbors;
+	find_neighbors(neighbors, current);
 	return current;
 }
 
