@@ -3,43 +3,8 @@
 #include <map>
 #include <utility>
 #include <algorithm>
-#include <array>
+#include "field.h"
 
-using namespace std;
-
-template<size_t Cols, size_t Rows>
-class Field {
-public:
-	Field() : cells() {}
-
-	void set(int x, int y) {
-		set(x, y, true);
-	}
-
-	void set(int x, int y, bool alive) {
-		cells[x][y] = alive;
-	}
-
-	bool get(int x, int y) const {
-		return cells[x][y];
-	}
-
-	bool operator==(const Field<Cols, Rows> & rhs) const {
-		for (int x=0; x<Cols; x++) {
-			for (int y=0; y<Rows; y++) {
-				if (get(x, y) != rhs.get(x, y))
-					return false;
-			}
-		}
-		return true;
-	}
-
-	bool operator!=(const Field<Cols, Rows> & rhs) const {
-		return !operator==(rhs);
-	}
-private:
-	array<array<bool, Rows>, Cols> cells;
-};
 
 int wrap(int n, int max) {
 	while (n < 0) n += max;
