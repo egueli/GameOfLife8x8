@@ -38,5 +38,16 @@ TEST(GoLAlgo, blinker_h_to_blinker_v) {
 	EXPECT_EQ(algo.advance(blinker_h()), blinker_v());
 }
 
+TEST(GolAlgo, blinker_h_has_start_time_of_0) {
+	int start_time;
+	int period;
+	algo.run(blinker_h(), start_time, period);
+	EXPECT_EQ(start_time, 0);
+}
 
-
+TEST(GolAlgo, blinker_h_has_period_of_2) {
+	int start_time;
+	int period;
+	algo.run(blinker_h(), start_time, period);
+	EXPECT_EQ(period, 2);
+}

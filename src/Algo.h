@@ -10,16 +10,20 @@
 
 #include <cstddef>
 #include "Field.h"
+#include <list>
 
 template<size_t Cols, size_t Rows>
 class GoLAlgorithm {
 public:
 	Field<Cols, Rows> advance(const Field<Cols, Rows> & current);
+	void run(const Field<Cols, Rows> & seed, int& out_start, int& out_period);
 
 private:
 	void find_neighbors(
 		array<array<int, Rows>, Cols> &neighbors,
 		const Field<Cols, Rows> &current);
+	void find_same(const std::vector< Field<Cols, Rows> > & haystack, const Field<Cols, Rows> & needle);
+
 	int wrap(int n, int max);
 };
 
@@ -70,6 +74,26 @@ int GoLAlgorithm<Cols, Rows>::wrap(int n, int max) {
 	while (n < 0) n += max;
 	while (n >= max) n -= max;
 	return n;
+}
+
+template<size_t Cols, size_t Rows>
+void GoLAlgorithm<Cols, Rows>::run(const Field<Cols, Rows> & seed, int& out_start, int& out_period) {
+	std::list< Field<Cols, Rows> > generations;
+	generations.push_back(seed);
+
+	while (true) {
+		Field<Cols, Rows> next = advance(generations.back());
+		auto it = std::find(generations.begin(), generations.end(), next);
+		if (it == generations.end()) {
+			generations.push_back(next);
+		}
+		else {
+			int generation = generations.size();
+			out_start = std::distance(generations.begin(), it);
+			out_period = generation - out_start;
+			break;
+		}
+	}
 }
 
 #endif /* ALGO_H_ */
