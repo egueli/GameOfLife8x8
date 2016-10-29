@@ -22,7 +22,7 @@ private:
 	void find_neighbors(
 		array<array<int, Rows>, Cols> &neighbors,
 		const Field<Cols, Rows> &current);
-	void find_same(const std::vector< Field<Cols, Rows> > & haystack, const Field<Cols, Rows> & needle);
+	void find_same(const std::list< Field<Cols, Rows> > & haystack, const Field<Cols, Rows> & needle);
 
 	int wrap(int n, int max);
 };
