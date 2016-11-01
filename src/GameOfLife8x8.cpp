@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <climits>
 
 #include "field.h"
 #include "algo.h"
@@ -9,6 +10,7 @@ template<size_t Cols, size_t Rows>
 void print_field(const Field<Cols, Rows> & field);
 
 void print_8x8_array(array< array<int, 8>, 8> &arr);
+pair<int, int> max_2d(array< array<int, 8>, 8> &arr);
 
 
 
@@ -71,8 +73,28 @@ int main(int argc, char *argv[]) {
 
 	cout << "start time variations:" << endl;
 	print_8x8_array(mut_start);
+	auto b_start = max_2d(mut_start);
+	cout << "biggest variation: " << b_start.first << " at " << b_start.second << endl;
+
 	cout << "period variations:" << endl;
 	print_8x8_array(mut_period);
+	auto b_period = max_2d(mut_period);
+	cout << "biggest variation: " << b_period.first << " at " << b_period.second << endl;
+}
+
+pair<int, int> max_2d(array< array<int, 8>, 8> &arr) {
+	int m = INT_MIN;
+	int mn = 0;
+	for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < 8; x++) {
+			int v = arr[x][y];
+			if (m < v) {
+				m = v;
+				mn = y * 8 + x;
+			}
+		}
+	}
+	return pair<int, int>(m, mn);
 }
 
 void print_8x8_array(array< array<int, 8>, 8> &arr) {
