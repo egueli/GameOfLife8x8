@@ -1,10 +1,5 @@
-#include <string.h>
 #include <iostream>
-#include <map>
-#include <utility>
-#include <algorithm>
-#include <time.h>
-#include <stdlib.h>
+#include <sstream>
 
 #include "field.h"
 #include "algo.h"
@@ -15,9 +10,35 @@ void print_field(const Field<Cols, Rows> & field);
 Field<8, 8> random_field();
 
 
-int main(int argc, char ** argv) {
-	srand(time(NULL));
+int main(int argc, char *argv[]) {
+	unsigned int r_seed;
+	if (argc < 2) {
+		r_seed = time(NULL);
+	}
+	else {
+		std::istringstream iss(argv[1]);
+		iss >> r_seed;
+		if (iss.fail()) {
+			cout << "Invalid random seed " << iss << endl;
+			r_seed = time(NULL);
+		}
+	}
+	srand(r_seed);
 	Field<8, 8> seed = random_field();
+
+	if (argc >= 3) {
+		std::istringstream iss(argv[2]);
+		int n;
+		iss >> n;
+		if (!iss.fail()) {
+			int x = n % 8;
+			int y = n / 8;
+			cout << "Mutating cell at row " << y << " column " << x << endl;
+			seed.set(x, y, !seed.get(x, y));
+		}
+	}
+
+
 	print_field(seed);
 
 	GoLAlgorithm<8, 8> algo;
