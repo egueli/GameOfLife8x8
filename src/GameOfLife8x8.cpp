@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
 
 template<size_t Cols, size_t Rows>
 void print_field(const Field<Cols, Rows> & field) {
-	for (int x = 0; x < Cols; x++) {
-		for (int y = 0; y < Rows; y++) {
+	for (int y = 0; y < Cols; y++) {
+		for (int x = 0; x < Rows; x++) {
 			printf("%c ", field.get(x, y) ? 'O' : '.');
 		}
 		printf("\n");
