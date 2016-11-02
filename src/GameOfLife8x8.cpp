@@ -56,6 +56,21 @@ int main(int argc, char *argv[]) {
 	cout << "period length: " << period << endl;
 	cout << endl;
 
+	Field<8, 8> field = seed;
+	Field<8, 8> last_field;
+	for (int i=0; i<start_time; i++) {
+		field = algo.advance(field);
+		cout << "STEP " << i << endl;
+		print_field(field);
+		if (i > 0) {
+			cout << "Difference with previous:" << endl;
+			print_field(field ^ last_field);
+		}
+		cout << endl;
+
+		last_field = field;
+	}
+
 	array< array<int, 8>, 8> mut_start = {};
 	array< array<int, 8>, 8> mut_period = {};
 	for (int y = 0; y < 8; y++) {

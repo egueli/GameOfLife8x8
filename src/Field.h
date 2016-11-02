@@ -43,6 +43,27 @@ public:
 	bool operator!=(const Field<Cols, Rows> & rhs) const {
 		return !operator==(rhs);
 	}
+
+	Field<Cols, Rows> operator^(const Field<Cols, Rows> & rhs) const {
+		Field<Cols, Rows> out;
+		for (int x=0; x<Cols; x++) {
+			for (int y=0; y<Rows; y++) {
+				out.set(x, y, get(x, y) ^ rhs.get(x, y));
+			}
+		}
+		return out;
+	}
+
+	Field<Cols, Rows> operator&(const Field<Cols, Rows> & rhs) const {
+		Field<Cols, Rows> out;
+		for (int x=0; x<Cols; x++) {
+			for (int y=0; y<Rows; y++) {
+				out.set(x, y, get(x, y) & rhs.get(x, y));
+			}
+		}
+		return out;
+	}
+
 private:
 	array<array<bool, Rows>, Cols> cells;
 };
