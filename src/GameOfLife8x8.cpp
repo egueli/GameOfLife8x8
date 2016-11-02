@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
 	srand(r_seed);
 	Field<8, 8> seed = random_field();
 
-	if (argc >= 3) {
-		std::istringstream iss(argv[2]);
+	for (int i = 0; i < argc - 2; i++) {
+		std::istringstream iss(argv[i + 2]);
 		int n;
 		iss >> n;
 		if (!iss.fail()) {
