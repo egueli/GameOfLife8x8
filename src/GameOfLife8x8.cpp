@@ -1,3 +1,4 @@
+#include <AnimTime.h>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -6,6 +7,7 @@
 #include "field.h"
 #include "algo.h"
 #include "display.h"
+#include "AnimTime.h"
 
 Display display;
 
@@ -92,8 +94,9 @@ void run_animation(GoLAlgorithm<8, 8> &algo, Field<8, 8> &seed, int num_steps) {
 	Field<8, 8> field = seed;
 	Field<8, 8> last_field;
 	for (int i=0; i<num_steps; i++) {
+		my_sleep(1000);
 		field = algo.advance(field);
-		cout << "STEP " << i << endl;
+		//cout << "STEP " << i << endl;
 		print_field(field);
 		if (i > 0) {
 			cout << "Difference with previous:" << endl;
