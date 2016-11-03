@@ -5,6 +5,9 @@
 
 #include "field.h"
 #include "algo.h"
+#include "display.h"
+
+Display display;
 
 template<size_t Cols, size_t Rows>
 void print_field(const Field<Cols, Rows> & field);
@@ -44,7 +47,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-
+	display.init();
 	print_field(seed);
 
 	GoLAlgorithm<8, 8> algo;
@@ -124,12 +127,15 @@ void print_8x8_array(array< array<int, 8>, 8> &arr) {
 
 template<size_t Cols, size_t Rows>
 void print_field(const Field<Cols, Rows> & field) {
-	for (int y = 0; y < Cols; y++) {
-		for (int x = 0; x < Rows; x++) {
-			printf(field.get(x, y) ? "⬜️ " : "⬛ ");
+	display.clear();
+	for (uint8_t y = 0; y < Cols; y++) {
+		for (uint8_t x = 0; x < Rows; x++) {
+			if (field.get(x, y)) {
+				display.set_green(x, y);
+			}
 		}
-		printf("\n");
 	}
+	display.commit();
 }
 
 
