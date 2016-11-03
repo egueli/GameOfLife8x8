@@ -15,7 +15,7 @@ void print_field(const Field<Cols, Rows> & field);
 void print_8x8_array(array< array<int, 8>, 8> &arr);
 pair<int, int> max_2d(array< array<int, 8>, 8> &arr);
 
-
+void run_animation(GoLAlgorithm<8, 8> &algo, Field<8, 8> &seed, int duration);
 
 Field<8, 8> random_field();
 
@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	display.init();
+
 	print_field(seed);
 
 	GoLAlgorithm<8, 8> algo;
@@ -59,20 +60,7 @@ int main(int argc, char *argv[]) {
 	cout << "period length: " << period << endl;
 	cout << endl;
 
-	Field<8, 8> field = seed;
-	Field<8, 8> last_field;
-	for (int i=0; i<start_time; i++) {
-		field = algo.advance(field);
-		cout << "STEP " << i << endl;
-		print_field(field);
-		if (i > 0) {
-			cout << "Difference with previous:" << endl;
-			print_field(field ^ last_field);
-		}
-		cout << endl;
-
-		last_field = field;
-	}
+	run_animation(algo, seed, start_time);
 
 	array< array<int, 8>, 8> mut_start = {};
 	array< array<int, 8>, 8> mut_period = {};
@@ -98,6 +86,23 @@ int main(int argc, char *argv[]) {
 	print_8x8_array(mut_period);
 	auto b_period = max_2d(mut_period);
 	cout << "biggest variation: " << b_period.first << " at " << b_period.second << endl;
+}
+
+void run_animation(GoLAlgorithm<8, 8> &algo, Field<8, 8> &seed, int num_steps) {
+	Field<8, 8> field = seed;
+	Field<8, 8> last_field;
+	for (int i=0; i<num_steps; i++) {
+		field = algo.advance(field);
+		cout << "STEP " << i << endl;
+		print_field(field);
+		if (i > 0) {
+			cout << "Difference with previous:" << endl;
+			print_field(field ^ last_field);
+		}
+		cout << endl;
+
+		last_field = field;
+	}
 }
 
 pair<int, int> max_2d(array< array<int, 8>, 8> &arr) {
